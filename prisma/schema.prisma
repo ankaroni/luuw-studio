@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SessionStatus {
+  OPEN
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  CANCELLED
+  REFUNDED
+}
+
+enum FulfillmentStatus {
+  NEW
+  SHIPPED
+  DONE
+}
+
+model Workshop {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  label       String
+  description String
+  image       String
+  category    String // kerzen | keraflott | tufting
+  sessions    Session[]
+  createdAt   DateTime  @default(now())
+}
+
+model Session {
+  id          String        @id @default(cuid())
+  workshop    Workshop      @relation(fields: [workshopId], references: [id], onDelete: Cascade)
+  workshopId  String
+  startsAt    DateTime
+  endsAt      DateTime
+  capacity    Int
+  priceCents  Int
+  status      SessionStatus @default(OPEN)
+  bookings    Booking[]
+  createdAt   DateTime      @default(now())
+
+  @@index([startsAt])
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  session         Session       @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId       String
+  seats           Int
+  name            String
+  email           String
+  phone           String?
+  status          PaymentStatus @default(PENDING)
+  stripeSessionId String?       @unique
+  createdAt       DateTime      @default(now())
+
+  @@index([sessionId])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String   @default("")
+  category    String // Kerzen | Keraflott | Geschenke
+  priceCents  Int
+  stock       Int      @default(0)
+  active      Boolean  @default(true)
+  items       OrderItem[]
+  createdAt   DateTime @default(now())
+}
+
+model Order {
+  id              String            @id @default(cuid())
+  email           String
+  name            String
+  totalCents      Int
+  status          PaymentStatus     @default(PENDING)
+  fulfillment     FulfillmentStatus @default(NEW)
+  stripeSessionId String?           @unique
+  items           OrderItem[]
+  createdAt       DateTime          @default(now())
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId    String
+  product    Product @relation(fields: [productId], references: [id])
+  productId  String
+  quantity   Int
+  priceCents Int
+}
+
+model GiftCard {
+  id           String    @id @default(cuid())
+  code         String    @unique
+  balanceCents Int
+  expiresAt    DateTime?
+  createdAt    DateTime  @default(now())
+}
