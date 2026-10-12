@@ -35,6 +35,19 @@ export default async function Orders() {
               <span className="font-semibold">{o.name} <span className="text-muted font-normal">· {o.email}</span></span>
               <span>{eur(o.totalCents)} · {payLabel[o.status]}</span>
             </div>
+            {o.shipLine1 ? (
+              <address className="not-italic text-xs bg-cream p-3 leading-relaxed">
+                <span className="eyebrow !text-[9px] text-muted block mb-1">Lieferadresse</span>
+                {o.shipName ?? o.name}<br />
+                {o.shipLine1}<br />
+                {o.shipLine2 && <>{o.shipLine2}<br /></>}
+                {o.shipPostalCode} {o.shipCity}<br />
+                {o.shipCountry}
+                {o.phone && <><br />Tel. {o.phone}</>}
+              </address>
+            ) : (
+              o.status === 'PAID' && <p className="text-xs text-terra">Keine Lieferadresse gespeichert.</p>
+            )}
             <p className="text-muted text-xs">{dateTime(o.createdAt)} · {o.items.map((i) => `${i.quantity}× ${i.product.name}`).join(', ')}</p>
             <form action={setFulfillment} className="flex gap-2 items-center">
               <input type="hidden" name="id" value={o.id} />

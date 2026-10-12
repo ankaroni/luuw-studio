@@ -87,6 +87,13 @@ model Order {
   name            String?
   totalCents      Int
   shippingCents   Int               @default(0)
+  phone           String?
+  shipName        String?
+  shipLine1       String?
+  shipLine2       String?
+  shipPostalCode  String?
+  shipCity        String?
+  shipCountry     String?
   status          PaymentStatus     @default(PENDING)
   fulfillment     FulfillmentStatus @default(NEW)
   stripeSessionId String?           @unique

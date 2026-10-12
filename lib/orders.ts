@@ -9,6 +9,8 @@ export async function finalizeCheckoutSession(session: Stripe.Checkout.Session) 
   const orderId = session.metadata?.orderId;
   if (!orderId || session.payment_status !== 'paid') return null;
 
+  const ship = session.collected_information?.shipping_details;
+
   return prisma.$transaction(async (tx) => {
     const claimed = await tx.order.updateMany({
       where: { id: orderId, status: 'PENDING' },
@@ -16,6 +18,13 @@ export async function finalizeCheckoutSession(session: Stripe.Checkout.Session) 
         status: 'PAID',
         email: session.customer_details?.email ?? undefined,
         name: session.customer_details?.name ?? undefined,
+        phone: session.customer_details?.phone ?? undefined,
+        shipName: ship?.name ?? undefined,
+        shipLine1: ship?.address?.line1 ?? undefined,
+        shipLine2: ship?.address?.line2 ?? undefined,
+        shipPostalCode: ship?.address?.postal_code ?? undefined,
+        shipCity: ship?.address?.city ?? undefined,
+        shipCountry: ship?.address?.country ?? undefined,
       },
     });
     if (claimed.count === 1) {

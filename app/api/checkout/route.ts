@@ -41,6 +41,7 @@ export async function POST(req: Request) {
       locale: 'de',
       client_reference_id: order.id,
       metadata: { orderId: order.id },
+      phone_number_collection: { enabled: true },
       shipping_address_collection: { allowed_countries: ['DE', 'AT', 'CH', 'NL', 'BE', 'LU', 'DK', 'FR'] },
       line_items: [
         ...products.map((p) => ({
