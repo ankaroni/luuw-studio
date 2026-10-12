@@ -76,6 +76,7 @@ model Product {
   priceCents  Int
   stock       Int      @default(0)
   active      Boolean  @default(true)
+  image       String?
   items       OrderItem[]
   createdAt   DateTime @default(now())
 }
