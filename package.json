@@ -1,12 +1,29 @@
 {
-  "name": "luuw-studio-tailwind-prototype",
-  "version": "1.0.0",
+  "name": "luuw-studio",
+  "version": "0.1.0",
   "private": true,
-  "description": "Responsive Luuw Studio homepage prototype in HTML + Tailwind CSS 4",
   "scripts": {
-    "build": "node build-css.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^16.4.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "tailwindcss": "^4.1.10"
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.0",
+    "postcss": "^8.5.29",
+    "prettier": "^3.9.10",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
   }
 }

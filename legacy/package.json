@@ -1,0 +1,12 @@
+{
+  "name": "luuw-studio-tailwind-prototype",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Responsive Luuw Studio homepage prototype in HTML + Tailwind CSS 4",
+  "scripts": {
+    "build": "node build-css.js"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.10"
+  }
+}
