@@ -49,8 +49,8 @@ export function ShopCategories() {
             <p className="eyebrow text-terra mb-4">Luuw Onlineshop</p>
             <h2 id="categoryTitle" className="display text-[44px]">{active.modalTitle}</h2>
             <p className="text-muted text-[14px] leading-[1.8] mt-5">{active.description}</p>
-            <p className="text-[12px] bg-cream2 p-4 mt-6">Der Onlineshop startet bald. Schau gern bald wieder vorbei!</p>
-            <button className="button-fill mt-7" onClick={() => setOpenId(null)}>Weiter entdecken ↗</button>
+            <p className="text-[12px] bg-cream2 p-4 mt-6">Hier findest du unsere aktuellen Lieblingsstücke.</p>
+            <a className="button-fill mt-7" href={`/shop?kategorie=${active.id}`}>Produkte ansehen ↗</a>
           </div>
         </Dialog>
       )}

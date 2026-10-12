@@ -6,13 +6,13 @@ import { searchKeywords } from '@/lib/data';
 import { useToast } from './Toast';
 
 const left = [
-  ['#shop', 'Shop'],
-  ['#workshops', 'Workshops'],
-  ['#about', 'Über Luuw'],
+  ['/shop', 'Shop'],
+  ['/#workshops', 'Workshops'],
+  ['/#about', 'Über Luuw'],
 ];
 const right = [
-  ['#journal', 'Journal'],
-  ['#kontakt', 'Newsletter'],
+  ['/#journal', 'Journal'],
+  ['/#kontakt', 'Newsletter'],
 ];
 const workshopKeys = ['blumen', 'herbst', 'tufting', 'keraflott'];
 
@@ -40,7 +40,8 @@ export function Header() {
     const key = Object.keys(searchKeywords).find((word) => q.includes(word));
     if (!key) return notify('Noch kein passender Treffer. Schau gern bei Shop oder Workshops vorbei.');
     setSearchOpen(false);
-    location.hash = searchKeywords[key];
+    const dest = searchKeywords[key];
+    location.href = dest.startsWith('#') ? `/${dest}` : dest;
     if (workshopKeys.includes(key)) {
       setTimeout(() => window.dispatchEvent(new CustomEvent('open-workshop', { detail: key })), 300);
     }
@@ -56,7 +57,7 @@ export function Header() {
             <a key={href} href={href} className="hover:text-terra transition">{label}</a>
           ))}
         </nav>
-        <a href="#top" aria-label="Luuw Studio Startseite" className="flex flex-col items-center leading-none shrink-0">
+        <a href="/" aria-label="Luuw Studio Startseite" className="flex flex-col items-center leading-none shrink-0">
           <Image src="/assets/luuw-studio-logo.png" alt="Luuw Studio Hamburg" width={160} height={65} priority className="object-contain" style={{ width: 160, height: 65 }} />
         </a>
         <div className="flex-1 flex justify-end items-center gap-2 md:gap-5">
