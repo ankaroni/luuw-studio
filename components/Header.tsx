@@ -57,7 +57,7 @@ export function Header() {
           ))}
         </nav>
         <a href="#top" aria-label="Luuw Studio Startseite" className="flex flex-col items-center leading-none shrink-0">
-          <Image src="/assets/luuw-studio-logo.png" alt="Luuw Studio Hamburg" width={160} height={65} priority className="object-contain" />
+          <Image src="/assets/luuw-studio-logo.png" alt="Luuw Studio Hamburg" width={160} height={65} priority className="object-contain" style={{ width: 160, height: 65 }} />
         </a>
         <div className="flex-1 flex justify-end items-center gap-2 md:gap-5">
           <nav className="hidden lg:flex items-center gap-9 text-[11px] tracking-[.13em] font-bold uppercase mr-4" aria-label="Hauptnavigation rechts">
