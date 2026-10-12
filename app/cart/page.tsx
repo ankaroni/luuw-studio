@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useCart } from '@/components/CartProvider';
 import { SiteShell } from '@/components/SiteShell';
 
@@ -10,7 +11,27 @@ const FREE_SHIPPING_CENTS = 5000;
 
 export default function CartPage() {
   const { items, ready, subtotalCents, setQuantity, remove } = useCart();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
   const missing = Math.max(0, FREE_SHIPPING_CENTS - subtotalCents);
+
+  const checkout = async () => {
+    setBusy(true);
+    setError('');
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })) }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.url) throw new Error(data.error ?? 'Fehler');
+      window.location.assign(data.url);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Fehler');
+      setBusy(false);
+    }
+  };
 
   return (
     <SiteShell>
@@ -55,9 +76,10 @@ export default function CartPage() {
                 <p className="text-[12px] text-muted mt-2">
                   {missing > 0 ? `Noch ${eur(missing)} bis zum kostenlosen Versand.` : 'Du bekommst kostenlosen Versand. ♡'}
                 </p>
-                <p className="text-[12px] text-muted mt-1">Inkl. MwSt. Versandkosten werden an der Kasse berechnet.</p>
-                <button disabled className="button-fill w-full mt-6 opacity-60 cursor-not-allowed">Zur Kasse</button>
-                <p className="text-[12px] text-muted mt-3">Die Bezahlung wird gerade eingerichtet.</p>
+                <p className="text-[12px] text-muted mt-1">Inkl. MwSt. Versand: 4,90 € (ab 50 € kostenlos).</p>
+                <button className="button-fill w-full mt-6 disabled:opacity-60" disabled={busy} onClick={checkout}>{busy ? 'Einen Moment …' : 'Zur Kasse'}</button>
+                {error && <p role="alert" className="text-terra text-[13px] mt-3">{error}</p>}
+                <p className="text-[12px] text-muted mt-3">Sichere Bezahlung über Stripe.</p>
               </aside>
             </div>
           )}

@@ -38,7 +38,7 @@ export default async function ProductPage({ params }: Props) {
               {p.description && <p className="text-muted leading-[1.9] text-[14px] mt-8 max-w-[480px]">{p.description}</p>}
               <p className="text-[13px] mt-6">{p.stock > 0 ? `Auf Lager (${p.stock})` : 'Ausverkauft'}</p>
               <AddToCart product={{ productId: p.id, slug: p.slug, name: p.name, priceCents: p.priceCents, image: p.image, stock: p.stock }} />
-              <p className="text-[12px] text-muted mt-3">Die Bezahlung wird gerade eingerichtet.</p>
+              
             </div>
           </div>
         </div>
