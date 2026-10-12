@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { CartProvider } from '@/components/CartProvider';
 import { ToastProvider } from '@/components/Toast';
 import './globals.css';
 
@@ -18,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Caveat:wght@400;500;600;700&display=swap"
         />
       </head>
-      <body className="bg-canvas font-sans text-ink"><ToastProvider>{children}</ToastProvider></body>
+      <body className="bg-canvas font-sans text-ink"><ToastProvider><CartProvider>{children}</CartProvider></ToastProvider></body>
     </html>
   );
 }

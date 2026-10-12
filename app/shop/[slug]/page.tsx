@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { AddToCart } from '@/components/AddToCart';
 import { ProductImage } from '@/components/ProductImage';
 import { SiteShell } from '@/components/SiteShell';
 import { prisma } from '@/lib/db';
@@ -36,8 +37,8 @@ export default async function ProductPage({ params }: Props) {
               <p className="text-[12px] text-muted mt-1">inkl. MwSt., zzgl. Versand</p>
               {p.description && <p className="text-muted leading-[1.9] text-[14px] mt-8 max-w-[480px]">{p.description}</p>}
               <p className="text-[13px] mt-6">{p.stock > 0 ? `Auf Lager (${p.stock})` : 'Ausverkauft'}</p>
-              <button disabled className="button-fill mt-8 opacity-60 cursor-not-allowed">In den Warenkorb</button>
-              <p className="text-[12px] text-muted mt-3">Der Warenkorb und die Bezahlung werden gerade eingerichtet.</p>
+              <AddToCart product={{ productId: p.id, slug: p.slug, name: p.name, priceCents: p.priceCents, image: p.image, stock: p.stock }} />
+              <p className="text-[12px] text-muted mt-3">Die Bezahlung wird gerade eingerichtet.</p>
             </div>
           </div>
         </div>

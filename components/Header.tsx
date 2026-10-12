@@ -1,8 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { searchKeywords } from '@/lib/data';
+import { useCart } from './CartProvider';
 import { useToast } from './Toast';
 
 const left = [
@@ -24,6 +26,7 @@ const Icon = ({ children, size = 20 }: { children: React.ReactNode; size?: numbe
 
 export function Header() {
   const notify = useToast();
+  const { count } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -72,10 +75,10 @@ export function Header() {
           <button className="icon-button hidden sm:grid" aria-label="Mein Konto" title="Mein Konto" onClick={accountToast}>
             <Icon><circle cx="12" cy="8" r="4" /><path d="M4.5 21a7.5 7.5 0 0 1 15 0" /></Icon>
           </button>
-          <button className="icon-button relative" aria-label="Warenkorb" onClick={() => notify('Der Warenkorb ist bald verfügbar. Bestellungen sind noch nicht möglich.')}>
+          <Link href="/cart" className="icon-button relative" aria-label={`Warenkorb, ${count} Artikel`}>
             <Icon><path d="M4 8h16l-1.3 12H5.3L4 8Z" /><path d="M9 9V6a3 3 0 0 1 6 0v3" /></Icon>
-            <span className="absolute top-0 right-0 text-[9px] bg-terra text-white w-3.5 h-3.5 flex items-center justify-center rounded-full">0</span>
-          </button>
+            <span className="absolute top-0 right-0 text-[9px] bg-terra text-white min-w-3.5 h-3.5 px-0.5 flex items-center justify-center rounded-full">{count}</span>
+          </Link>
           <button aria-label={menuOpen ? 'Menü schließen' : 'Menü öffnen'} aria-expanded={menuOpen} aria-controls="mobileNav" className="icon-button lg:hidden" onClick={() => setMenuOpen((o) => !o)}>
             <Icon size={23}><path d="M3 7h18M3 12h18M3 17h18" /></Icon>
           </button>
